@@ -5,6 +5,10 @@ inputs:
   repo-token:
     description: 'The token for accessing the repo.'
     required: true
+  repository:
+    description: 'The repository path that stores the lock. E.g `ben-z/gh-action-mutex`'
+    required: false
+    default: ${{ github.repository }}
   branch:
     description: 'The branch to use for the mutex'
     required: false
@@ -13,17 +17,13 @@ inputs:
     description: '[Internal] The location to store the mutex repo'
     required: false
     default: '/run/gh-action-mutex/repo'
-  internal_repository:
-    description: '[Internal] The github repository'
-    required: false
-    default: ${{ github.repository }}
 runs:
   using: 'docker'
   image: 'Dockerfile'
   env:
     ARG_BRANCH: ${{ inputs.branch }}
     ARG_CHECKOUT_LOCATION: ${{ inputs.internal_checkout-location }}
-    ARG_REPOSITORY: ${{ inputs.internal_repository }}
+    ARG_REPOSITORY: ${{ inputs.repository }}
     ARG_REPO_TOKEN: ${{ inputs.repo-token }}
   entrypoint: '/scripts/lock.sh'
   post-entrypoint: '/scripts/unlock.sh'
