@@ -1,4 +1,14 @@
-#!/bin/bash -e
+# Set up the mutex repo
+# args:
+#   $1: repo_url
+set_up_repo() {
+	__repo_url=$1
+
+	git init --quiet
+	git config --local user.name "github-bot" --quiet
+	git config --local user.email "github-bot@users.noreply.github.com" --quiet
+	git remote add origin "$__repo_url"
+}
 
 # Update the branch to the latest from the remote. Or checkout to an orphan branch
 # args:
@@ -72,36 +82,4 @@ wait_for_lock() {
 		wait_for_lock $@
 	fi
 }
-
-echo "Cloning and checking out $ARG_REPOSITORY:$ARG_BRANCH in $ARG_CHECKOUT_LOCATION"
-
-mkdir -p "$ARG_CHECKOUT_LOCATION"
-cd "$ARG_CHECKOUT_LOCATION"
-pwd
-
-__mutex_queue_file=mutex_queue
-__server_url=https://$GITHUB_TOKEN@github.com
-
-git init --quiet
-git config --local user.name "github-bot" --quiet
-git config --local user.email "github-bot@users.noreply.github.com" --quiet
-git remote add origin "$__server_url/$ARG_REPOSITORY"
-
-__ticket_id="$GITHUB_RUN_ID-$(date +%s)"
-echo "::save-state name=ticket_id::$__ticket_id"
-
-enqueue $ARG_BRANCH $__mutex_queue_file $__ticket_id
-
-echo "Queue file:"
-cat $__mutex_queue_file
-
-wait_for_lock $ARG_BRANCH $__mutex_queue_file $__ticket_id
-
-# We have the lock now
-
-ls -alh
-uname -a
-
-time=$(date)
-echo "::set-output name=time::$time"
 
