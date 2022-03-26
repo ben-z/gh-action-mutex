@@ -2,6 +2,9 @@
 
 echo "Hello $1"
 
+echo "$GITHUB_REPOSITORY"
+echo "$GITHUB_TOKEN"
+
 git status
 
 ls -alh
