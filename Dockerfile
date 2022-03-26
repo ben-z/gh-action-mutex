@@ -6,7 +6,5 @@ RUN curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | d
     && apt-get update \
     && apt-get install -y gh
 
-COPY entrypoint.sh /entrypoint.sh
-COPY entrypoint-post.sh /entrypoint-post.sh
+COPY rootfs/ /
 
-ENTRYPOINT ["/entrypoint.sh"]

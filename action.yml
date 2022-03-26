@@ -14,5 +14,6 @@ runs:
   image: 'Dockerfile'
   args:
     - ${{ inputs.who-to-greet }}
-  post-entrypoint: '/entrypoint-post.sh'
+  entrypoint: '/scripts/lock.sh'
+  post-entrypoint: '/scripts/unlock.sh'
 
