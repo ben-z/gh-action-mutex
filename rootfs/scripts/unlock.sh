@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -xe
 
 # TODO: remove
 echo "Goodbye $1"
