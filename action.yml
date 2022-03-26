@@ -15,3 +15,5 @@ runs:
   args:
     - ${{ inputs.who-to-greet }}
 
+post-entrypoint: '/entrypoint-post.sh'
+
