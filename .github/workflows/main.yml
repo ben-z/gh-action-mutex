@@ -14,3 +14,31 @@ jobs:
           echo "I am protected!"
           sleep 5
 
+  two_clients_test_client_1:
+    runs-on: ubuntu-latest
+    name: Two clients test (client 1)
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up mutex
+        uses: ./
+        with:
+          branch: gh-mutex-two-clients-test
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+      - run: |
+          echo "I am protected!"
+          sleep 20
+
+  two_clients_test_client_2:
+    runs-on: ubuntu-latest
+    name: Two clients test (client 2)
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up mutex
+        uses: ./
+        with:
+          branch: gh-mutex-two-clients-test
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+      - run: |
+          echo "I am protected!"
+          sleep 20
+
