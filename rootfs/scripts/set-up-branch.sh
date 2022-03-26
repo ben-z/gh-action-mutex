@@ -1,4 +1,4 @@
-#!/bin/bash -xe
+#!/bin/bash -e
 
 # Update the branch to the latest from the remote. Or checkout to an orphan branch
 # args:
@@ -7,10 +7,10 @@ update_branch() {
 	__branch=$1
 
 	# exit on error
-	git switch --orphan gh-action-mutex/temp-branch-$(date +%s)
-	git branch -D $__branch 2>/dev/null || true
-	git fetch origin $__branch
-	git checkout $__branch || git switch --orphan $__branch
+	git switch --orphan gh-action-mutex/temp-branch-$(date +%s) --quiet
+	git branch -D $__branch --quiet 2>/dev/null || true
+	git fetch origin $__branch --quiet
+	git checkout $__branch --quiet || git switch --orphan $__branch --quiet
 }
 
 # Add to the queue
@@ -37,10 +37,10 @@ enqueue() {
 		echo "$__ticket_id" >> "$__mutex_queue_file"
 
 		git add $__queue_file
-		git commit -m "Enqueuing $__ticket_id"
+		git commit -m "Enqueuing $__ticket_id" --quiet
 		__has_error=$((__has_error + $?))
 
-		git push --set-upstream origin $__branch
+		git push --set-upstream origin $__branch --quiet
 		__has_error=$((__has_error + $?))
 	fi
 
@@ -82,9 +82,9 @@ pwd
 __mutex_queue_file=mutex_queue
 __server_url=https://$GITHUB_TOKEN@github.com
 
-git init
-git config --local user.name "github-bot"
-git config --local user.email "github-bot@users.noreply.github.com"
+git init --quiet
+git config --local user.name "github-bot" --quiet
+git config --local user.email "github-bot@users.noreply.github.com" --quiet
 git remote add origin "$__server_url/$ARG_REPOSITORY"
 
 __ticket_id="$GITHUB_RUN_ID-$(date +%s)"
