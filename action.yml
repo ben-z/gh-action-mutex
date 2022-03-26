@@ -13,6 +13,10 @@ inputs:
     description: 'The branch to use for the mutex'
     required: false
     default: 'gh-mutex'
+  debug:
+    description: 'Print debug output'
+    required: false
+    default: "false"
   internal_checkout-location:
     description: '[Internal] The location to store the mutex repo'
     required: false
@@ -25,6 +29,7 @@ runs:
     ARG_CHECKOUT_LOCATION: ${{ inputs.internal_checkout-location }}
     ARG_REPOSITORY: ${{ inputs.repository }}
     ARG_REPO_TOKEN: ${{ inputs.repo-token }}
+    ARG_DEBUG: ${{ inputs.debug }}
   entrypoint: '/scripts/lock.sh'
   post-entrypoint: '/scripts/unlock.sh'
 

@@ -26,7 +26,7 @@ jobs:
           branch: gh-mutex-two-clients-test
           repo-token: ${{ secrets.GITHUB_TOKEN }}
       - run: |
-          echo "I am protected!"
+          echo "I am protected! (Client 1)"
           sleep 20
 
   two_clients_test_client_2:
@@ -41,6 +41,21 @@ jobs:
           branch: gh-mutex-two-clients-test
           repo-token: ${{ secrets.GITHUB_TOKEN }}
       - run: |
-          echo "I am protected!"
+          echo "I am protected! (Client 2)"
           sleep 20
+
+  debug_test:
+    runs-on: ubuntu-latest
+    name: Test the debugging flag
+    needs: [two_clients_test_client_1,two_clients_test_client_2]
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up mutex
+        uses: ./
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          debug: "true"
+      - run: |
+          echo "I am protected!"
+          sleep 5
 
