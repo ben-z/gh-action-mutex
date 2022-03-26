@@ -1,14 +1,21 @@
-#!/bin/sh -l
+#!/bin/bash
+
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 
 echo "Hello $1"
 
-echo "$GITHUB_REPOSITORY"
-echo "$GITHUB_TOKEN"
+"$SCRIPT_DIR"/set-up-branch.sh
 
-git status
+# echo "$ARG_CHECKOUT_LOCATION"
+# echo "$GITHUB_REPOSITORY"
+# echo "$GITHUB_TOKEN"
+# echo "$ARG_BRANCH"
 
-ls -alh
-uname -a
+#git status
+#
+#ls -alh
+#uname -a
 
 time=$(date)
 echo "::set-output name=time::$time"
+

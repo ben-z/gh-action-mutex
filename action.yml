@@ -6,12 +6,28 @@ inputs:
     description: 'Who to greet'
     required: true
     default: 'World'
+  branch:
+    description: 'The branch to use for the mutex'
+    required: false
+    default: 'gh-mutex'
+  internal_checkout-location:
+    description: '[Internal] The location to store the mutex repo'
+    required: false
+    default: '/run/gh-action-mutex/repo'
+  internal_repository:
+    description: '[Internal] The github repository'
+    required: false
+    default: ${{ github.repository }}
 outputs:
   time: # id of output
     description: 'The time we greeted you'
 runs:
   using: 'docker'
   image: 'Dockerfile'
+  env:
+    ARG_BRANCH: ${{ inputs.branch }}
+    ARG_CHECKOUT_LOCATION: ${{ inputs.internal_checkout-location }}
+    ARG_REPOSITORY: ${{ inputs.internal_repository }}
   args:
     - ${{ inputs.who-to-greet }}
   entrypoint: '/scripts/lock.sh'
