@@ -2,6 +2,8 @@
 
 echo "Hello $1"
 
+git status
+
 ls -alh
 uname -a
 
