@@ -1,13 +1,23 @@
 # Set up the mutex repo
 # args:
-#   $1: repo_url
+#   $1: server_url
+#   $2: repo_path
+#   $3: repo_token
 set_up_repo() {
-	__repo_url=$1
+	__server_url=$1
+	__repo_path=$2
+	__repo_token=$3
 
 	git init --quiet
 	git config --local user.name "github-bot" --quiet
 	git config --local user.email "github-bot@users.noreply.github.com" --quiet
-	git remote add origin "$__repo_url"
+	#set +x
+	#__b64str=$(echo "x-access-token:$__repo_token" | base64)
+	#echo "::add-mask::$__b64str"
+	#set -x
+	#git config --local "http.$__server_url/.extraheader" "AUTHORIZATION: basic ${__b64str}"
+	#git remote add origin "$__server_url/$__repo_path"
+	git remote add origin "https://x-access-token:$__repo_token@github.com/$__repo_path"
 }
 
 # Update the branch to the latest from the remote. Or checkout to an orphan branch
