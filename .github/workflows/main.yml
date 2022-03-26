@@ -46,7 +46,7 @@ jobs:
 
   debug_test:
     runs-on: ubuntu-latest
-    name: Test the debugging flag
+    name: Test the debug flag
     needs: [two_clients_test_client_1,two_clients_test_client_2]
     steps:
       - uses: actions/checkout@v3
