@@ -11,6 +11,7 @@ jobs:
         uses: ./
         with:
           who-to-greet: 'Mona the Octocat'
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
       - name: Get the output time
         run: echo "The time was ${{ steps.hello.outputs.time }}"
 

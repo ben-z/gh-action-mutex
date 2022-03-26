@@ -9,7 +9,6 @@ inputs:
   repo-token:
     description: 'The token for accessing the repo.'
     required: true
-    default: ${{ secrets.GITHUB_TOKEN }}
   branch:
     description: 'The branch to use for the mutex'
     required: false
