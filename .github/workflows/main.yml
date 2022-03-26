@@ -17,6 +17,7 @@ jobs:
   two_clients_test_client_1:
     runs-on: ubuntu-latest
     name: Two clients test (client 1)
+    needs: [simple_test]
     steps:
       - uses: actions/checkout@v3
       - name: Set up mutex
@@ -31,6 +32,7 @@ jobs:
   two_clients_test_client_2:
     runs-on: ubuntu-latest
     name: Two clients test (client 2)
+    needs: [simple_test]
     steps:
       - uses: actions/checkout@v3
       - name: Set up mutex
