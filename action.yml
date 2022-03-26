@@ -1,5 +1,8 @@
 # action.yml
 name: 'Mutex Action'
+branding:
+  icon: 'lock'
+  color: 'black'
 description: 'A simple locking/unlocking mechanism to provide mutual exclusion in Github Actions'
 inputs:
   repo-token:
