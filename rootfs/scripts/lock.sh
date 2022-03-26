@@ -13,7 +13,7 @@ mkdir -p "$ARG_CHECKOUT_LOCATION"
 cd "$ARG_CHECKOUT_LOCATION"
 
 __mutex_queue_file=mutex_queue
-__server_url=https://$GITHUB_TOKEN@github.com
+__server_url=https://$ARG_REPO_TOKEN@github.com
 __ticket_id="$GITHUB_RUN_ID-$(date +%s)"
 echo "::save-state name=ticket_id::$__ticket_id"
 
