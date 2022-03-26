@@ -7,6 +7,7 @@ set_up_repo() {
 	git init --quiet
 	git config --local user.name "github-bot" --quiet
 	git config --local user.email "github-bot@users.noreply.github.com" --quiet
+	git remote remove origin 2>/dev/null || true
 	git remote add origin "$__repo_url"
 }
 
@@ -35,23 +36,23 @@ enqueue() {
 
 	__has_error=0
 
-	echo "Enqueuing to branch $__branch, file $__queue_file, id $__ticket_id"
+	echo "[$__ticket_id] Enqueuing to branch $__branch, file $__queue_file"
 
 	update_branch $__branch
-	__has_error=$((__has_error + $?))
 
 	touch $__queue_file
 
 	# if we are not in the queue, add ourself to the queue
-	if [ $__has_error -eq 0 ] && [ -z "$(cat $__mutex_queue_file | grep -F $__ticket_id)" ]; then
+	if [ -z "$(cat $__mutex_queue_file | grep -F $__ticket_id)" ]; then
 		echo "$__ticket_id" >> "$__mutex_queue_file"
 
 		git add $__queue_file
-		git commit -m "Enqueuing $__ticket_id" --quiet
-		__has_error=$((__has_error + $?))
+		git commit -m "[$__ticket_id] Enqueue " --quiet
 
+		set +e # allow errors
 		git push --set-upstream origin $__branch --quiet
 		__has_error=$((__has_error + $?))
+		set -e
 	fi
 
 	if [ ! $__has_error -eq 0 ]; then
@@ -70,9 +71,7 @@ wait_for_lock() {
 	__queue_file=$2
 	__ticket_id=$3
 
-	__has_error=0
-
-	echo "Waiting for lock for ticket $__ticket_id"
+	echo "[$__ticket_id] Waiting for lock"
 
 	update_branch $__branch
 
@@ -80,6 +79,46 @@ wait_for_lock() {
 	if [ "$(cat $__mutex_queue_file | head -n 1)" != "$__ticket_id" ]; then
 		sleep 5
 		wait_for_lock $@
+	fi
+}
+
+# Wait for the lock to become available
+# args:
+#   $1: branch
+#   $2: queue_file
+#   $3: ticket_id
+unlock() {
+	__branch=$1
+	__queue_file=$2
+	__ticket_id=$3
+
+	__has_error=0
+
+
+	echo "[$__ticket_id] Unlocking"
+
+	update_branch $__branch
+
+	if [ "$(cat $__mutex_queue_file | head -n 1)" != "$__ticket_id" ]; then
+		1>&2 echo "We don't have the lock! Ticket ID: $__ticket_id. Mutex file:"
+		cat $__mutex_queue_file
+		exit 1
+	fi
+
+	cat $__mutex_queue_file | tail -n +2 > ${__mutex_queue_file}.new
+	mv ${__mutex_queue_file}.new $__mutex_queue_file
+
+	git add $__queue_file
+	git commit -m "[$__ticket_id] Unlock" --quiet
+
+	set +e # allow errors
+	git push --set-upstream origin $__branch --quiet
+	__has_error=$((__has_error + $?))
+	set -e
+
+	if [ ! $__has_error -eq 0 ]; then
+		sleep 1
+		unlock $@
 	fi
 }
 
