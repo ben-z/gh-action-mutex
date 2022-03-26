@@ -14,7 +14,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Set up mutex
-        uses: ben-z/gh-action-mutex@v1.0-alpha-2
+        uses: ben-z/gh-action-mutex@v1.0-alpha-3
         with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
       - run: |
@@ -35,7 +35,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Set up mutex
-        uses: ben-z/gh-action-mutex@v1.0-alpha-2
+        uses: ben-z/gh-action-mutex@v1.0-alpha-3
         with:
           branch: another-mutex
           repo-token: ${{ secrets.GITHUB_TOKEN }}
