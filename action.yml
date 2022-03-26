@@ -1,11 +1,7 @@
 # action.yml
-name: 'Hello World'
-description: 'Greet someone and record the time'
+name: 'Mutex'
+description: 'A simple locking/unlocking mechanism to provide mutual exclusion in Github Actions'
 inputs:
-  who-to-greet:  # id of input
-    description: 'Who to greet'
-    required: true
-    default: 'World'
   repo-token:
     description: 'The token for accessing the repo.'
     required: true
@@ -21,9 +17,6 @@ inputs:
     description: '[Internal] The github repository'
     required: false
     default: ${{ github.repository }}
-outputs:
-  time: # id of output
-    description: 'The time we greeted you'
 runs:
   using: 'docker'
   image: 'Dockerfile'
@@ -32,8 +25,6 @@ runs:
     ARG_CHECKOUT_LOCATION: ${{ inputs.internal_checkout-location }}
     ARG_REPOSITORY: ${{ inputs.internal_repository }}
     ARG_REPO_TOKEN: ${{ inputs.repo-token }}
-  args:
-    - ${{ inputs.who-to-greet }}
   entrypoint: '/scripts/lock.sh'
   post-entrypoint: '/scripts/unlock.sh'
 

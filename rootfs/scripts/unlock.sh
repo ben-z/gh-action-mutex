@@ -1,8 +1,5 @@
 #!/bin/bash -xe
 
-# TODO: remove
-echo "Goodbye $1"
-
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 
 source "$SCRIPT_DIR/utils.sh"
@@ -17,5 +14,5 @@ __ticket_id="$STATE_ticket_id"
 set_up_repo "$__repo_url"
 unlock $ARG_BRANCH $__mutex_queue_file $__ticket_id
 
-echo "Lock successfully acquired"
+echo "Successfully unlocked"
 

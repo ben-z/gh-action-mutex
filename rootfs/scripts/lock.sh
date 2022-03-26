@@ -1,8 +1,5 @@
 #!/bin/bash -xe
 
-# TODO: remove
-echo "Hello $1"
-
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 
 source "$SCRIPT_DIR/utils.sh"
@@ -22,7 +19,4 @@ enqueue $ARG_BRANCH $__mutex_queue_file $__ticket_id
 wait_for_lock $ARG_BRANCH $__mutex_queue_file $__ticket_id
 
 echo "Lock successfully acquired"
-
-time=$(date)
-echo "::set-output name=time::$time"
 
