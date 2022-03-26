@@ -17,10 +17,9 @@ set_up_repo() {
 update_branch() {
 	__branch=$1
 
-	# exit on error
 	git switch --orphan gh-action-mutex/temp-branch-$(date +%s) --quiet
 	git branch -D $__branch --quiet 2>/dev/null || true
-	git fetch origin $__branch --quiet
+	git fetch origin $__branch --quiet 2>/dev/null || true
 	git checkout $__branch --quiet || git switch --orphan $__branch --quiet
 }
 
