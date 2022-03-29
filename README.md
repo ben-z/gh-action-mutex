@@ -14,9 +14,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Set up mutex
-        uses: ben-z/gh-action-mutex@v1.0-alpha-3
-        with:
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
+        uses: ben-z/gh-action-mutex@v1.0-alpha-4
       - run: |
           echo "I am protected!"
           sleep 5
@@ -35,14 +33,15 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Set up mutex
-        uses: ben-z/gh-action-mutex@v1.0-alpha-3
+        uses: ben-z/gh-action-mutex@v1.0-alpha-4
         with:
           branch: another-mutex
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
       - run: |
           echo "I am protected by the 'another-mutex' mutex!"
           sleep 5
 ```
+
+More options such as using a different repo to store the mutex (which allows sharing a mutex between jobs from arbitrary repos) or using different access tokens can be found in [actions.yml](./actions.yml)
 
 ## Motivation
 

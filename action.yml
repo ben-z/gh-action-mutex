@@ -7,7 +7,8 @@ description: 'A simple locking/unlocking mechanism to provide mutual exclusion i
 inputs:
   repo-token:
     description: 'The token for accessing the repo.'
-    required: true
+    required: false
+    default: ${{ github.token }}
   repository:
     description: 'The repository path that stores the lock. E.g `ben-z/gh-action-mutex`'
     required: false
