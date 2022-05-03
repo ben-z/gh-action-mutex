@@ -36,4 +36,6 @@ runs:
     ARG_DEBUG: ${{ inputs.debug }}
   entrypoint: '/scripts/lock.sh'
   post-entrypoint: '/scripts/unlock.sh'
+  if: ${{ always() }}
+  post-if: ${{ always() }}
 
