@@ -42,8 +42,8 @@ enqueue() {
 	touch $__queue_file
 
 	# if we are not in the queue, add ourself to the queue
-	if [ -z "$(cat $__mutex_queue_file | grep -F $__ticket_id)" ]; then
-		echo "$__ticket_id" >> "$__mutex_queue_file"
+	if [ -z "$(cat $__queue_file | grep -F $__ticket_id)" ]; then
+		echo "$__ticket_id" >> "$__queue_file"
 
 		git add $__queue_file
 		git commit -m "[$__ticket_id] Enqueue " --quiet
@@ -75,40 +75,45 @@ wait_for_lock() {
 	update_branch $__branch
 
 	# if we are not the first in line, spin
-	if [ "$(cat $__mutex_queue_file | head -n 1)" != "$__ticket_id" ]; then
+	if [ "$(cat $__queue_file | head -n 1)" != "$__ticket_id" ]; then
 		sleep 5
 		wait_for_lock $@
 	fi
 }
 
-# Wait for the lock to become available
+# Remove from the queue, when locked by it or just enqueued
 # args:
 #   $1: branch
 #   $2: queue_file
 #   $3: ticket_id
-unlock() {
+unqueue() {
 	__branch=$1
 	__queue_file=$2
 	__ticket_id=$3
 
 	__has_error=0
 
-
-	echo "[$__ticket_id] Unlocking"
-
 	update_branch $__branch
 
-	if [ "$(cat $__mutex_queue_file | head -n 1)" != "$__ticket_id" ]; then
-		1>&2 echo "We don't have the lock! Ticket ID: $__ticket_id. Mutex file:"
-		cat $__mutex_queue_file
+	if [ "$(cat $__queue_file | head -n 1)" != "$__ticket_id" ]; then
+		echo "[$__ticket_id] Unqueueing. We don't have the lock!"
+		__message="[$__ticket_id] Unqueue"
+	else
+		echo "[$__ticket_id] Unlocking"
+		__message="[$__ticket_id] Unlock"
+	fi
+
+	if [ $(awk "/$__ticket_id/" $__queue_file | wc -l) == "0" ]; then
+		1>&2 echo "[$__ticket_id] Not in queue! Mutex file:"
+		cat $__queue_file
 		exit 1
 	fi
 
-	cat $__mutex_queue_file | tail -n +2 > ${__mutex_queue_file}.new
-	mv ${__mutex_queue_file}.new $__mutex_queue_file
+	awk "!/$__ticket_id/" $__queue_file > ${__queue_file}.new
+	mv ${__queue_file}.new $__queue_file
 
 	git add $__queue_file
-	git commit -m "[$__ticket_id] Unlock" --quiet
+	git commit -m "$__message" --quiet
 
 	set +e # allow errors
 	git push --set-upstream origin $__branch --quiet
