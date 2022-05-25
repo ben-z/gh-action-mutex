@@ -122,7 +122,7 @@ unqueue() {
 
 	if [ ! $__has_error -eq 0 ]; then
 		sleep 1
-		unlock $@
+		unqueue $@
 	fi
 }
 
