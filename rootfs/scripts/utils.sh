@@ -75,7 +75,7 @@ wait_for_lock() {
 	update_branch $__branch
 
 	# if we are not the first in line, spin
-	if [ "$(cat $__queue_file | head -n 1)" != "$__ticket_id" ]; then
+	if [ "$(cat $__queue_file | awk NF | head -n 1)" != "$__ticket_id" ]; then
 		sleep 5
 		wait_for_lock $@
 	fi
@@ -95,7 +95,7 @@ unqueue() {
 
 	update_branch $__branch
 
-	if [ "$(cat $__queue_file | head -n 1)" != "$__ticket_id" ]; then
+	if [ "$(cat $__queue_file | awk NF | head -n 1)" != "$__ticket_id" ]; then
 		echo "[$__ticket_id] Unqueueing. We don't have the lock!"
 		__message="[$__ticket_id] Unqueue"
 	else
@@ -109,7 +109,7 @@ unqueue() {
 		exit 1
 	fi
 
-	awk "!/$__ticket_id/" $__queue_file > ${__queue_file}.new
+	awk "!/$__ticket_id/" $__queue_file | awk NF > ${__queue_file}.new
 	mv ${__queue_file}.new $__queue_file
 
 	git add $__queue_file
