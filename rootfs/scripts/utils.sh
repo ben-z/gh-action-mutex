@@ -95,12 +95,12 @@ dequeue() {
 
 	update_branch $__branch
 
-	if [ "$(cat $__queue_file | awk NF | head -n 1)" != "$__ticket_id" ]; then
-		echo "[$__ticket_id] Dequeueing. We don't have the lock!"
-		__message="[$__ticket_id] Dequeue"
-	else
+	if [ "$(cat $__queue_file | awk NF | head -n 1)" == "$__ticket_id" ]; then
 		echo "[$__ticket_id] Unlocking"
 		__message="[$__ticket_id] Unlock"
+	else
+		echo "[$__ticket_id] Dequeueing. We don't have the lock!"
+		__message="[$__ticket_id] Dequeue"
 	fi
 
 	if [ $(awk "/$__ticket_id/" $__queue_file | wc -l) == "0" ]; then
