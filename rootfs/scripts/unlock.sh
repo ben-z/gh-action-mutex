@@ -16,7 +16,7 @@ __repo_url="https://x-access-token:$ARG_REPO_TOKEN@github.com/$ARG_REPOSITORY"
 __ticket_id="$STATE_ticket_id"
 
 set_up_repo "$__repo_url"
-unqueue $ARG_BRANCH $__mutex_queue_file $__ticket_id
+dequeue $ARG_BRANCH $__mutex_queue_file $__ticket_id
 
 echo "Successfully unlocked"
 

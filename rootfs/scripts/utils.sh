@@ -86,7 +86,7 @@ wait_for_lock() {
 #   $1: branch
 #   $2: queue_file
 #   $3: ticket_id
-unqueue() {
+dequeue() {
 	__branch=$1
 	__queue_file=$2
 	__ticket_id=$3
@@ -96,8 +96,8 @@ unqueue() {
 	update_branch $__branch
 
 	if [ "$(cat $__queue_file | awk NF | head -n 1)" != "$__ticket_id" ]; then
-		echo "[$__ticket_id] Unqueueing. We don't have the lock!"
-		__message="[$__ticket_id] Unqueue"
+		echo "[$__ticket_id] Dequeueing. We don't have the lock!"
+		__message="[$__ticket_id] Dequeue"
 	else
 		echo "[$__ticket_id] Unlocking"
 		__message="[$__ticket_id] Unlock"
@@ -122,7 +122,7 @@ unqueue() {
 
 	if [ ! $__has_error -eq 0 ]; then
 		sleep 1
-		unqueue $@
+		dequeue $@
 	fi
 }
 
