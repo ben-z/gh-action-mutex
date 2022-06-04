@@ -53,32 +53,4 @@ jobs:
       - run: |
           echo "I am protected!"
           sleep 5
-          
-  always_unlock_test_1:
-    runs-on: ubuntu-latest
-    name: Test unlocking even after failed (client 1)
-    steps:
-      - uses: actions/checkout@v3
-      - name: Set up mutex
-        uses: ./
-        with:
-          branch: gh-mutex-unlock-test
-      - run: |
-          echo "Failing, still should let the mutex free"
-          sleep 5
-          exit 1
-
-  always_unlock_test_2:
-    runs-on: ubuntu-latest
-    name: Test unlocking even after failed (client 2)
-    needs: [always_unlock_test_1]
-    if: ${{ always() }}
-    steps:
-      - uses: actions/checkout@v3
-      - run: echo "Should not hang"
-      - name: Set up mutex
-        uses: ./
-        with:
-          branch: gh-mutex-unlock-test
-      - run: sleep 5
 
