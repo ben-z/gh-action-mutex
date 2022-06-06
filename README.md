@@ -14,7 +14,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Set up mutex
-        uses: ben-z/gh-action-mutex@v1.0-alpha-4
+        uses: ben-z/gh-action-mutex@v1.0-alpha-5
       - run: |
           echo "I am protected!"
           sleep 5
@@ -33,7 +33,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Set up mutex
-        uses: ben-z/gh-action-mutex@v1.0-alpha-4
+        uses: ben-z/gh-action-mutex@v1.0-alpha-5
         with:
           branch: another-mutex
       - run: |
