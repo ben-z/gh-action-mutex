@@ -16,7 +16,7 @@ cd "$ARG_CHECKOUT_LOCATION"
 __mutex_queue_file=mutex_queue
 __repo_url="https://x-access-token:$ARG_REPO_TOKEN@github.com/$ARG_REPOSITORY"
 __ticket_id="$GITHUB_RUN_ID-$(date +%s)-$(( $RANDOM % 1000 ))"
-echo "::save-state name=ticket_id::$__ticket_id"
+echo "ticket_id=$__ticket_id" >> $GITHUB_STATE
 
 set_up_repo "$__repo_url"
 enqueue $ARG_BRANCH $__mutex_queue_file $__ticket_id
