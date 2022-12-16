@@ -1,6 +1,6 @@
-FROM ubuntu:20.04
+FROM alpine:3.16
 
-RUN apt-get update && apt-get install -y curl git
+RUN  apk update \
+  && apk add --no-cache bash curl git
 
 COPY rootfs/ /
-
