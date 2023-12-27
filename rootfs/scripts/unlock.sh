@@ -12,7 +12,7 @@ mkdir -p "$ARG_CHECKOUT_LOCATION"
 cd "$ARG_CHECKOUT_LOCATION"
 
 __mutex_queue_file=mutex_queue
-__repo_url="https://x-access-token:$ARG_REPO_TOKEN@github.com/$ARG_REPOSITORY"
+__repo_url="https://x-access-token:$ARG_REPO_TOKEN@$ARG_GITHUB_SERVER/$ARG_REPOSITORY"
 __ticket_id="$STATE_ticket_id"
 
 set_up_repo "$__repo_url"
