@@ -45,6 +45,7 @@ enqueue() {
 
 	# if we are not in the queue, add ourself to the queue
 	if ! grep -qx "$__ticket_id" "$__queue_file" ; then
+		echo "[$__ticket_id] Adding ourself to the queue file $__queue_file"
 		echo "$__ticket_id" >> "$__queue_file"
 
 		git add $__queue_file
