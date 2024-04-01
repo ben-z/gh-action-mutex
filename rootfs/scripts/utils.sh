@@ -112,7 +112,7 @@ dequeue() {
 	else
 		1>&2 echo "[$__ticket_id] Not in queue! Mutex file:"
 		cat $__queue_file
-		exit 0
+		return
 	fi
 
 	git add $__queue_file
