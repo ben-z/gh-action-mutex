@@ -33,6 +33,13 @@ inputs:
     description: 'What locking action to take, either `lock` or `unlock`'
     required: false
     default: 'lock'
+  ticket_id:
+    description: 'If action is unlock, this is the ticket id from a prior lock'
+    required: false
+outputs:
+  ticket_id:
+    description: 'The unique ID of this particular lock, can be used to forcibly unlock in a subsequent action call'
+
 runs:
   using: 'docker'
   image: 'Dockerfile'
@@ -44,5 +51,6 @@ runs:
     ARG_REPO_TOKEN: ${{ inputs.repo-token }}
     ARG_DEBUG: ${{ inputs.debug }}
     ARG_ACTION: ${{ inputs.action }}
+    ARG_TICKET_ID: ${{ inputs.ticket_id }}
   entrypoint: '/scripts/lock.sh'
   post-entrypoint: '/scripts/unlock.sh'

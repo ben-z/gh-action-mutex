@@ -19,4 +19,3 @@ set_up_repo "$__repo_url"
 dequeue $ARG_BRANCH $__mutex_queue_file $__ticket_id
 
 echo "Successfully unlocked"
-

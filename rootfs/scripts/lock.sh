@@ -17,12 +17,12 @@ __mutex_queue_file=mutex_queue
 __repo_url="https://x-access-token:$ARG_REPO_TOKEN@$ARG_GITHUB_SERVER/$ARG_REPOSITORY"
 __ticket_id="$GITHUB_RUN_ID-$(date +%s)-$(( $RANDOM % 1000 ))"
 echo "ticket_id=$__ticket_id" >> $GITHUB_STATE
-
+echo "ticket_id=$__ticket_id" >> $GITHUB_OUTPUT
 
 set_up_repo "$__repo_url"
 
 if [ $ARG_ACTION = "unlock" ]; then
-	dequeue $ARG_BRANCH $__mutex_queue_file $__ticket_id
+	dequeue $ARG_BRANCH $__mutex_queue_file $ARG_TICKET_ID
 	echo "Successfully unlocked"
 else
 	enqueue $ARG_BRANCH $__mutex_queue_file $__ticket_id
