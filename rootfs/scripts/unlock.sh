@@ -4,6 +4,13 @@ if [ $ARG_DEBUG != "false" ]; then
 	set -x
 fi
 
+if [ $ARG_ACTION = "unlock" ]; then
+	# This action's purpose was to unlock, so no need
+	# to double-unlock in the post-processing step
+	echo "Skipping unlock in post-processing for action=unlock"
+	exit
+fi
+
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 
 source "$SCRIPT_DIR/utils.sh"
@@ -19,4 +26,3 @@ set_up_repo "$__repo_url"
 dequeue $ARG_BRANCH $__mutex_queue_file $__ticket_id
 
 echo "Successfully unlocked"
-
