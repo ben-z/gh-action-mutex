@@ -6,6 +6,11 @@ fi
 
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 
+if [ $ARG_ACTION = "unlock" ]; then
+	bash "$SCRIPT_DIR/unlock.sh"
+	exit
+fi
+
 source "$SCRIPT_DIR/utils.sh"
 
 echo "Cloning and checking out $ARG_REPOSITORY:$ARG_BRANCH in $ARG_CHECKOUT_LOCATION"

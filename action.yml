@@ -29,6 +29,10 @@ inputs:
     description: '[Internal] The location to store the mutex repo'
     required: false
     default: '/run/gh-action-mutex/repo'
+  action:
+    description: 'What locking action to take, either `lock` or `unlock`'
+    required: false
+    default: 'lock'
 runs:
   using: 'docker'
   image: 'Dockerfile'
@@ -39,6 +43,6 @@ runs:
     ARG_REPOSITORY: ${{ inputs.repository }}
     ARG_REPO_TOKEN: ${{ inputs.repo-token }}
     ARG_DEBUG: ${{ inputs.debug }}
+    ARG_ACTION: ${{ inputs.action }}
   entrypoint: '/scripts/lock.sh'
   post-entrypoint: '/scripts/unlock.sh'
-
