@@ -13,10 +13,13 @@ cd "$ARG_CHECKOUT_LOCATION"
 
 __mutex_queue_file=mutex_queue
 __repo_url="https://x-access-token:$ARG_REPO_TOKEN@$ARG_GITHUB_SERVER/$ARG_REPOSITORY"
-__ticket_id="$STATE_ticket_id"
+# __ticket_id="$STATE_ticket_id"
+cat "$GITHUB_WORKSPACE/.$GITHUB_RUN_ID"
+export $(grep -v '^#' $GITHUB_WORKSPACE/.$GITHUB_RUN_ID | xargs -0)
+__ticket_id=$ticket_id
 
 set_up_repo "$__repo_url"
 dequeue $ARG_BRANCH $__mutex_queue_file $__ticket_id
 
+rm -f "$GITHUB_WORKSPACE/.$GITHUB_RUN_ID"
 echo "Successfully unlocked"
-
