@@ -29,6 +29,10 @@ inputs:
     description: '[Internal] The location to store the mutex repo'
     required: false
     default: '/run/gh-action-mutex/repo'
+  timeout:
+    description: 'timeout in seconds to return exist code 1'
+    required: false
+    default: '0'
 runs:
   using: 'docker'
   image: 'Dockerfile'

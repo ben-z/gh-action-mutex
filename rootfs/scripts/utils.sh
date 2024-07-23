@@ -61,15 +61,18 @@ enqueue() {
 	fi
 }
 
+total_sleep_time=0
 # Wait for the lock to become available
 # args:
 #   $1: branch
 #   $2: queue_file
 #   $3: ticket_id
+#   $4: timeout in minuts
 wait_for_lock() {
 	__branch=$1
 	__queue_file=$2
 	__ticket_id=$3
+	__timeout=$4
 
 	update_branch $__branch
 
@@ -79,6 +82,12 @@ wait_for_lock() {
 		if [ "$cur_lock" != "$__ticket_id" ]; then
 			echo "[$__ticket_id] Waiting for lock - Current lock assigned to [$cur_lock]"
 			sleep 5
+			total_sleep_time=$((total_sleep_time + 5))
+			echo "It has been waiting for $total_sleep_time seconds zzz"
+			if [$__timeout -gt 0] && [$total_sleep_time -gt $__timeout]; then
+				echo "[$__ticket_id] Total sleep time exceeded $__timeout seconds, exiting with code 1"
+				exit 1
+			fi
 			wait_for_lock $@
 		fi
 	else

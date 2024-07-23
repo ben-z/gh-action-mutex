@@ -13,7 +13,6 @@ cd "$ARG_CHECKOUT_LOCATION"
 
 __mutex_queue_file=mutex_queue
 __repo_url="https://x-access-token:$ARG_REPO_TOKEN@$ARG_GITHUB_SERVER/$ARG_REPOSITORY"
-cat "$GITHUB_WORKSPACE/.$GITHUB_RUN_ID"
 export $(grep -v '^#' $GITHUB_WORKSPACE/.$GITHUB_RUN_ID | xargs -0)
 __ticket_id=$ticket_id
 

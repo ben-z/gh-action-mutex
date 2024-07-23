@@ -24,7 +24,7 @@ cat "$GITHUB_WORKSPACE/.$GITHUB_RUN_ID"
 
 set_up_repo "$__repo_url"
 enqueue $ARG_BRANCH $__mutex_queue_file $__ticket_id
-wait_for_lock $ARG_BRANCH $__mutex_queue_file $__ticket_id
+wait_for_lock $ARG_BRANCH $__mutex_queue_file $__ticket_id $ARG_TIMEOUT
 
 echo "Lock successfully acquired"
 
