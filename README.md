@@ -14,7 +14,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Set up mutex
-        uses: ben-z/gh-action-mutex@v1.0-alpha-7
+        uses: ben-z/gh-action-mutex@v1.0.0-alpha.9
       - run: |
           echo "I am protected!"
           sleep 5
@@ -33,7 +33,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Set up mutex
-        uses: ben-z/gh-action-mutex@v1.0-alpha-7
+        uses: ben-z/gh-action-mutex@v1.0.0-alpha.9
         with:
           branch: another-mutex
       - run: |
@@ -42,6 +42,10 @@ jobs:
 ```
 
 More options such as using a different repo to store the mutex (which allows sharing a mutex between jobs from arbitrary repos) or using different access tokens can be found in [action.yml](./action.yml).
+
+### GitHub Enterprise Server
+
+It might be necessary to adjust the GitHub Server URL in case you are using a GitHub Enterprise Server. You can adjust the server URL by providing `github_server` input to the action. Please make sure to not include the `https://`. 
 
 ## Motivation
 
