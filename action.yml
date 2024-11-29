@@ -35,9 +35,11 @@ inputs:
     default: 'alpine:3.19'
 runs:
   using: 'docker'
-  image: 'Dockerfile'
+  build:
+    dockerfile: Dockerfile
+    args:
+      BASE_IMAGE: ${{ inputs.base_image }}  
   env:
-    ARG_BASE_IMAGE: ${{ inputs.base_image }}
     ARG_BRANCH: ${{ inputs.branch }}
     ARG_CHECKOUT_LOCATION: ${{ inputs.internal_checkout-location }}
     ARG_GITHUB_SERVER: ${{ inputs.github_server }}
