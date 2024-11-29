@@ -1,4 +1,4 @@
-FROM alpine:3.19
+FROM ${BASE_IMAGE}
 
 RUN  apk update \
   && apk add --no-cache bash curl git
