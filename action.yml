@@ -29,6 +29,10 @@ inputs:
     description: '[Internal] The location to store the mutex repo'
     required: false
     default: '/run/gh-action-mutex/repo'
+  ticket-id-suffix:
+    description: 'Ticket id suffix to avoid identical values for parallel/matrix jobs in the same workflow run'
+    required: false
+    default: 'default'
 runs:
   using: 'docker'
   image: 'Dockerfile'
@@ -39,6 +43,7 @@ runs:
     ARG_REPOSITORY: ${{ inputs.repository }}
     ARG_REPO_TOKEN: ${{ inputs.repo-token }}
     ARG_DEBUG: ${{ inputs.debug }}
+    ARG_TICKET_ID_SUFFIX: ${{ inputs.ticket-id-suffix}}
   entrypoint: '/scripts/lock.sh'
   post-entrypoint: '/scripts/unlock.sh'
 
